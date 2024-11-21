@@ -1,11 +1,29 @@
 function snakeVisual(index) {
-  return index === 16 || index === 59 || index === 63 || index === 67 || index === 87 || index === 93 || index === 95 || index === 99;
+  switch (index) {
+    case 16:
+    case 59:
+    case 63:
+    case 67:
+    case 87:
+    case 93:
+    case 95:
+    case 99:
+      return true;
+  }
 }
 
 function laddervisual(index) {
-  return index === 9 || index === 18 || index === 25 || index === 56 || index === 68 || index === 76 || index === 79;
+  switch (index) {
+    case 9:
+    case 18:
+    case 25:
+    case 56:
+    case 68:
+    case 76:
+    case 79:
+      return true;
+  }
 }
-
 
 function snakeBoard(playerOneScore, playerTwoScore) {
 
@@ -15,7 +33,7 @@ function snakeBoard(playerOneScore, playerTwoScore) {
   const playerTwo = "🕵🏻‍♂️";
   const END = "🏆"
 
-  let board = "____________________________________________________\n";
+  let board = "----------------------------------------------------\n";
   let value = 0;
 
   for (let index = 100; index >= 1; index--) {
@@ -52,13 +70,6 @@ function snakeBoard(playerOneScore, playerTwoScore) {
       board += "| " + value + " ";
     }
 
-    if (playerOneScore === index) {
-      value = playerOne;
-    }
-    if (playerTwoScore === index) {
-      value = playerTwo;
-    }
-
     if (index >= 10) {
       if (index === 100) {
         value = END;
@@ -68,7 +79,7 @@ function snakeBoard(playerOneScore, playerTwoScore) {
 
     if (index % 10 === 1) {
       board += " |\n";
-      board += "____________________________________________________\n";
+      board += "----------------------------------------------------\n";
     }
   }
   console.log(board);
