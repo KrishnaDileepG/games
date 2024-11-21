@@ -106,44 +106,66 @@ function rollDiceVisual(visualDice) {
   }
 }
 
+function dice() {
+  return Math.ceil(Math.random() * 6);
+}
+
+function playerOneTurn(playerOne, playerOneScore) {
+  prompt(playerOne + " roll the dice");
+  const newScore1 = dice();
+  const visualDice = newScore1;
+
+  rollIterate();
+  rollDiceVisual(visualDice);
+
+  console.log(newScore1);
+  playerOneScore = playerOneScore + newScore1;
+  console.log("The score of  " + playerOne + " : " + playerOneScore);
+  return playerOneScore;
+}
+
+function playerTwoTurn(playerTwo, playerTwoScore) {
+  prompt(playerTwo + " roll the dice");
+  const newScore2 = dice();
+  const visualDice = newScore2;
+
+  rollIterate();
+  rollDiceVisual(visualDice);
+
+  console.log(newScore2);
+  playerTwoScore = playerTwoScore + newScore2;
+  console.log("The score of " + playerTwo + " : " + playerTwoScore);
+
+  return playerTwoScore;
+}
+
 function getGame(playerOne, playerTwo) {
   let playerOneScore = 0;
   let playerTwoScore = 0;
-  let n = 1;
-  while (n < 10) {
-    prompt(playerOne + " roll the dice");
-    let newScore1 = Math.floor(Math.random() * 6) + 1;
-    let visualDice = newScore1;
-    rollIterate();
-    rollDiceVisual(visualDice)
-    console.log(newScore1);
-    playerOneScore = playerOneScore + newScore1;
-    console.log("The score of  " + playerOne + " : " + playerOneScore)
+  let times = 1;
+
+  while (times < 10) {
+    playerOneScore = playerOneTurn(playerOne, playerOneScore);
 
     if (playerOneScore >= 15) {
       console.log("CONGRATS 🥳" + playerOne);
       break;
     }
 
-    prompt(playerTwo + " roll the dice");
-    let newScore2 = Math.ceil(Math.random() * 6) + 1;
-    visualDice = newScore2;
-    rollIterate();
-    rollDiceVisual(visualDice);
-    console.log(newScore2);
-    playerTwoScore = playerTwoScore + newScore2;
-    console.log("The score of " + playerTwo + " : " + playerTwoScore);
+    playerTwoScore = playerTwoTurn(playerTwo, playerTwoScore);
 
     if (playerTwoScore >= 15) {
       console.log("CONGRATS 🥳" + playerTwo);
       break;
     }
-    n++;
+    times++;
   }
 }
 
 function rollTheDice() {
+  console.log("Game Description : Two player Game the person one that who got more than 15 they will win.");
   const isReady = confirm("Do you want to play ?");
+
   if (isReady) {
     const playerOne = prompt("Enter your Player One Name : ", "Dora");
     const playerTwo = prompt("Enter your Player Two Name : ", "Buji");
