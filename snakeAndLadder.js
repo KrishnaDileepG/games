@@ -8,7 +8,7 @@ function laddervisual(index) {
 
 
 function snakeBoard(playerOneScore, playerTwoScore) {
-  
+
   const SNAKE = "🐍";
   const LADDER = "🪜";
   const playerOne = "🧑‍🌾";
@@ -38,7 +38,8 @@ function snakeBoard(playerOneScore, playerTwoScore) {
     }
 
     if (index < 10) {
-      value = "0" + value;
+      const sign = value === LADDER ? "" : "0";
+      value = sign + value;
 
       if (playerOneScore === index) {
         value = playerOne;
@@ -65,13 +66,10 @@ function snakeBoard(playerOneScore, playerTwoScore) {
       board += "| " + value + " ";
     }
 
-
     if (index % 10 === 1) {
       board += " |\n";
       board += "____________________________________________________\n";
     }
-
-
   }
   console.log(board);
 }
@@ -152,42 +150,65 @@ function isLadder(position) {
   return position;
 }
 
+function dice() {
+  return Math.ceil(Math.random() * 6);
+}
+
+function playerOneGame(playerOne, playerOnePosition, playerTwoPosition) {
+  prompt(playerOne + " roll the dice");
+  let newPosition1 = dice();
+
+  console.clear();
+  console.log(newPosition1);
+
+  playerOnePosition = playerOnePosition + newPosition1;
+
+  if (playerOnePosition > 100) {
+    playerOnePosition = playerOnePosition - newPosition1;
+  }
+
+  playerOnePosition = isLadder(playerOnePosition);
+  playerOnePosition = isSnake(playerOnePosition);
+
+  console.log("The position of  " + playerOne + " : " + playerOnePosition);
+  snakeBoard(playerOnePosition, playerTwoPosition);
+
+  return playerOnePosition;
+}
+
+
+function playerTwoGame(playerTwo, playerTwoPosition, playerOnePosition) {
+  prompt(playerTwo + " roll the dice");
+  let newPosition2 = dice();
+
+  console.clear();
+  console.log(newPosition2);
+
+  playerTwoPosition = playerTwoPosition + newPosition2;
+
+  if (playerTwoPosition > 100) {
+    playerTwoPosition = playerTwoPosition - newPosition2;
+  }
+
+  playerTwoPosition = isLadder(playerTwoPosition);
+  playerTwoPosition = isSnake(playerTwoPosition);
+
+  console.log("The position of " + playerTwo + " : " + playerTwoPosition);
+  snakeBoard(playerOnePosition, playerTwoPosition);
+
+  return playerTwoPosition;
+}
+
 function tryGame(playerOne, playerTwo) {
   let playerOnePosition = 0;
   let playerTwoPosition = 0;
+
   snakeBoard(playerOnePosition, playerTwoPosition);
+
   while (playerOnePosition !== 100 && playerTwoPosition !== 100) {
+    playerOnePosition = playerOneGame(playerOne, playerOnePosition, playerTwoPosition);
+    playerTwoPosition = playerTwoGame(playerTwo, playerTwoPosition, playerOnePosition);
 
-    prompt(playerOne + " roll the dice");
-    let newPosition1 = Math.ceil(Math.random() * 6);
-    console.log(newPosition1);
-    playerOnePosition = playerOnePosition + newPosition1;
-
-    if (playerOnePosition > 100) {
-      playerOnePosition = playerOnePosition - newPosition1;
-    }
-    playerOnePosition = isLadder(playerOnePosition);
-    playerOnePosition = isSnake(playerOnePosition);
-    console.log("The position of  " + playerOne + " : " + playerOnePosition);
-    snakeBoard(playerOnePosition, playerTwoPosition);
-   
-
-    prompt(playerTwo + " roll the dice");
-
-    let newPosition2 = Math.ceil(Math.random() * 6);
-    console.log(newPosition2);
-
-    playerTwoPosition = playerTwoPosition + newPosition2;
-
-    if (playerTwoPosition > 100) {
-      playerTwoPosition = playerTwoPosition - newPosition1;
-    }
-
-    playerTwoPosition = isLadder(playerTwoPosition);
-    playerTwoPosition = isSnake(playerTwoPosition);
-    console.log("The position of " + playerTwo + " : " + playerTwoPosition);
-    snakeBoard(playerOnePosition, playerTwoPosition);
-   
   }
 
   const winner = playerOnePosition === 100 ? playerOne : playerTwo;
@@ -202,6 +223,5 @@ function snakeAndLadder() {
     const playerTwo = prompt("Enter your Player Two Name : ", "Buji");
     tryGame(playerOne, playerTwo);
   }
-
 }
 snakeAndLadder();
