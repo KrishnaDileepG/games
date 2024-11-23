@@ -1,3 +1,14 @@
+const SNAKE = "🐍";
+const LADDER = "🪜";
+const playerOne = "🧑‍🌾";
+const playerTwo = "🕵🏻‍♂️";
+const END = "🏆";
+const SPACE = " ";
+
+function isEqual(score, index) {
+  return score === index;
+}
+
 function snakeVisual(index) {
   switch (index) {
     case 16:
@@ -27,12 +38,6 @@ function laddervisual(index) {
 
 function snakeBoard(playerOneScore, playerTwoScore) {
 
-  const SNAKE = "🐍";
-  const LADDER = "🪜";
-  const playerOne = "🧑‍🌾";
-  const playerTwo = "🕵🏻‍♂️";
-  const END = "🏆"
-
   let board = "----------------------------------------------------\n";
   let value = 0;
 
@@ -47,11 +52,11 @@ function snakeBoard(playerOneScore, playerTwoScore) {
       value = LADDER;
     }
 
-    if (playerOneScore === index) {
+    if (isEqual(playerOneScore, index)) {
       value = playerOne;
     }
 
-    if (playerTwoScore === index) {
+    if (isEqual(playerTwoScore, index)) {
       value = playerTwo;
     }
 
@@ -59,14 +64,13 @@ function snakeBoard(playerOneScore, playerTwoScore) {
       const sign = value === LADDER ? "" : "0";
       value = sign + value;
 
-      if (playerOneScore === index) {
+      if (isEqual(playerOneScore, index)) {
         value = playerOne;
       }
 
-      if (playerTwoScore === index) {
+      if (isEqual(playerTwoScore, index)) {
         value = playerTwo;
       }
-
       board += "| " + value + " ";
     }
 
@@ -123,8 +127,6 @@ function isSnake(position) {
   }
   return position;
 }
-
-
 
 function isLadder(position) {
   const ladder1 = 9;
@@ -187,7 +189,6 @@ function playerOneGame(playerOne, playerOnePosition, playerTwoPosition) {
   return playerOnePosition;
 }
 
-
 function playerTwoGame(playerTwo, playerTwoPosition, playerOnePosition) {
   prompt(playerTwo + " roll the dice");
   let newPosition2 = dice();
@@ -210,7 +211,7 @@ function playerTwoGame(playerTwo, playerTwoPosition, playerOnePosition) {
   return playerTwoPosition;
 }
 
-function tryGame(playerOne, playerTwo) {
+function startGame(playerOne, playerTwo) {
   let playerOnePosition = 0;
   let playerTwoPosition = 0;
 
@@ -226,13 +227,13 @@ function tryGame(playerOne, playerTwo) {
   console.log("YOU DID IT......... 🥳 🤩" + winner);
 }
 
-
 function snakeAndLadder() {
   const isReady = confirm("Do you want to play ?");
+
   if (isReady) {
-    const playerOne = prompt("Enter your Player One Name : ", "Dora");
-    const playerTwo = prompt("Enter your Player Two Name : ", "Buji");
-    tryGame(playerOne, playerTwo);
+    const playerOne = prompt("Enter your Player One Name : ", "player 1");
+    const playerTwo = prompt("Enter your Player Two Name : ", "player 2");
+    startGame(playerOne, playerTwo);
   }
 }
 snakeAndLadder();
