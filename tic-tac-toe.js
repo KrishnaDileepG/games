@@ -1,84 +1,117 @@
-
 const vertical = " ║ ";
-const horizontal = "\n⸺⸺⸺⸺⸺⸺⸺⸺\n";
+const horizontal = "\n\t⸺⸺⸺⸺⸺⸺⸺⸺⸺⸺⸺\n";
 const cross_mark = "❌";
 const round = "⭕";
 
-function visualTicTac(board) {
+function ticTacToeGrid(board) {
   console.clear();
-  let boardString = "";
+  let boardString = "\t";
 
   for (let index = 0; index < 9; index++) {
-    boardString += board[index] !== " " ? board[index] : index + 1;
+    boardString += board[index] !== " " ? board[index] : '0' + (index + 1);
 
     if ((index + 1) % 3 === 0 && index !== 8) {
-      boardString += horizontal;
-    } else if ((index + 1) % 3 !== 0) {
+      boardString += horizontal + '\t';
+    }
+    if ((index + 1) % 3 !== 0) {
       boardString += vertical;
     }
   }
   console.log(boardString);
 }
 
-function checkWin(board, symbol) {
-  if (
-    (board[0] === symbol && board[1] === symbol && board[2] === symbol) ||
-    (board[3] === symbol && board[4] === symbol && board[5] === symbol) ||
-    (board[6] === symbol && board[7] === symbol && board[8] === symbol)) {
-    return true;
+function updateBoard(board, position, symbol) {
+  let newBoard = "";
+
+  for (let index = 0; index < board.length; index++) {
+    newBoard += index === position ? symbol : board[index];
+  }
+  return newBoard;
+}
+
+function slice(string, start, end) {
+  let slicedStr = '';
+
+  for (let index = start; index < end; index++) {
+    slicedStr += string[index];
   }
 
-  if (
-    (board[0] === symbol && board[3] === symbol && board[6] === symbol) ||
-    (board[1] === symbol && board[4] === symbol && board[7] === symbol) ||
-    (board[2] === symbol && board[5] === symbol && board[8] === symbol)) {
-    return true;
-  }
+  return slicedStr;
+}
 
-  if (
-    (board[0] === symbol && board[4] === symbol && board[8] === symbol) ||
-    (board[2] === symbol && board[4] === symbol && board[6] === symbol)) {
-    return true;
+function isCharFound(set, subSet) {
+  for (let index = 0; index < set.length; index++) {
+    if (set[index] === subSet) {
+      return true;
+    }
   }
 
   return false;
 }
 
-function updateBoard(board, position, symbol) {
-  let newBoard = "";
+function isSubSet(set, subSet) {
+  for (let subIndex = 0; subIndex < subSet.length; subIndex += 4) {
+    const string = slice(subSet, subIndex, subIndex + 3);
+    let count = 0;
 
-  for (let index = 0; index < board.length; index++) {
-    if (index === position) {
-      newBoard += symbol;
-    } else {
-      newBoard += board[index];
+    for (let index = 0; index < set.length; index++) {
+      if (isCharFound(string, set[index])) {
+        count++;
+      }
+    }
+
+    if (count === 3) {
+      return true;
     }
   }
-  return newBoard;
+
+  return false;
 }
 
-function tryGame(playerOneSymbol, playerTwoSymbol, playerOne, playerTwo) {
+function checkStatus(playerPositions) {
+  const WINNING_COMBINATIONS = "012 345 678 036 147 258 048 246";
+  return isSubSet(playerPositions, WINNING_COMBINATIONS);
+}
+
+function addInput(position) {
+  return position;
+}
+
+function startGame(playerOneSymbol, playerTwoSymbol, playerOne, playerTwo) {
   let board = "         ";
   let currentPlayer = playerOne;
   let currentSymbol = playerOneSymbol;
-
+  let playerOneinputset = "";
+  let playerTwoinputset = "";
+  let currentInputSet = "";
   let chance = 0;
+
   while (chance < 9) {
-    visualTicTac(board);
+    ticTacToeGrid(board);
     console.log(currentPlayer + " it's your turn " + currentSymbol);
 
     let position = +prompt("Enter the cell number you want to play") - 1;
 
-    if (position < 0 || position > 8 || board[position] !== " ") {
+    if (isValid(position, board)) {
       console.log("Invalid move ");
       continue;
+    }
+
+    if (currentPlayer === playerOne) {
+      playerOneinputset += addInput(position);
+      currentInputSet = playerOneinputset;
+    }
+
+    if (currentPlayer === playerTwo) {
+      playerTwoinputset += addInput(position);
+      currentInputSet = playerTwoinputset;
     }
 
     board = updateBoard(board, position, currentSymbol);
     chance++;
 
-    if (checkWin(board, currentSymbol)) {
-      visualTicTac(board);
+    if (checkStatus(currentInputSet)) {
+      ticTacToeGrid(board);
       console.log(currentPlayer + " congratulations 🥳 ");
       return;
     }
@@ -86,8 +119,12 @@ function tryGame(playerOneSymbol, playerTwoSymbol, playerOne, playerTwo) {
     currentSymbol = currentSymbol === playerOneSymbol ? playerTwoSymbol : playerOneSymbol;
   }
 
-  visualTicTac(board);
+  ticTacToeGrid(board);
   console.log("It's a draw!");
+}
+
+function isValid(position, board) {
+  return position < 0 || position > 8 || board[position] !== " ";
 }
 
 function getSymbol(playerOne, playerTwo) {
@@ -103,7 +140,7 @@ function getSymbol(playerOne, playerTwo) {
     playerTwoSymbol = "❌";
   }
 
-  tryGame(playerOneSymbol, playerTwoSymbol, playerOne, playerTwo);
+  startGame(playerOneSymbol, playerTwoSymbol, playerOne, playerTwo);
 }
 
 function ticTacToe() {
