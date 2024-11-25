@@ -19,7 +19,7 @@ function gameStatus(scorePegs) {
 
 function isValid(userPattern) {
   let numberOfCharacter = 0;
-  for (let index = 0; index < userPattern.length; index++) {
+  for (let index = 0; index < 4; index++) {
     if(userPattern[index] !== SPACE) {
       numberOfCharacter += 1;
     }
@@ -45,8 +45,8 @@ function scoringPegs(userPattern, actualPattern) {
 }
 
 function userGuess() {
-  const userPattern = prompt("Enter your Pattern 🖊️ :");
-  return SPACE + userPattern;
+  const userPattern = prompt("Enter your Pattern 🖊️ :  ");
+  return  userPattern;
 }
 
 function isPresent(actualString, newValue) {
@@ -70,7 +70,7 @@ function actualPattern() {
     const newValue = EMPTY_STRING + code();
 
     if (!isPresent(actualString, newValue)) {
-      actualString += SPACE + newValue;
+      actualString += newValue;
       index++;
     }
   }
@@ -82,7 +82,7 @@ function masterMindDescription(chance) {
   console.log(" ");
   console.log("       ⭐️⭐️⭐️MASTER MIND⭐️⭐️⭐️         ");
   console.log(" ");
-  console.log("--* Mastermind is a board game that challenges players to use logic and reasoning to crack a secret code  --* \n -> you need to give 4 numbers to guess which numbers are the master pegs \n -> You have " + chance + " chances to guess the master pegs\n -> " + VALUE_SAME + " means your prediction is right and " + POSITION_SAME + " means your prediction is in correct position ");
+  console.log("--* Mastermind is a board game that challenges players to use logic and reasoning to crack a secret code  --* \n -> you need to give 4 numbers to guess which numbers are the master pegs \n -> You have " + chance + " chances to guess the master pegs\n -> " + VALUE_SAME + " means your prediction is right and " + POSITION_SAME + " means your prediction is in correct position \n");
   console.log(" ");
 
 }
